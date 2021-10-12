@@ -62,7 +62,7 @@ class CommentForm extends Component {
 
         this.state = {
             isCommentFormOpen: false,
-            rating: '1',
+            rating: 1,
             author: '',
             comment: '',
             touched: {

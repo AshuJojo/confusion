@@ -1,31 +1,11 @@
 import React from 'react';
 import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardHeader, Media } from 'reactstrap';
 import { Link } from 'react-router-dom';
-
-function RenderLeader({ leader }) {
-    return (
-        <div key={leader.id} className="col-12 mt-5">
-            <Media className="row">
-                <Media left middle className="col-2">
-                    <Media object src={leader.image} alt={leader.name} />
-                </Media>
-                <Media body className="col-10">
-                    <Media heading>{leader.name}</Media>
-                    <h6>{leader.designation}</h6>
-                    {leader.description}
-                </Media>
-            </Media>
-        </div>
-    );
-}
+import { Loading } from './LoadingComponent';
+import { baseUrl } from '../shared/baseUrl';
+import { Fade, Stagger } from 'react-animation-components';
 
 function About(props) {
-
-    const leaders = props.leaders.map((leader) => {
-        return (
-            <RenderLeader leader={leader} />
-        );
-    });
 
     return (
         <div className="container">
@@ -82,12 +62,35 @@ function About(props) {
                     <h2>Corporate Leadership</h2>
                 </div>
                 <div className="col-12">
-                    <Media list>
-                        {leaders}
-                    </Media>
+                    {props.isLoading && <Loading />
+                        || props.errMess && <h4>{props.errMess}</h4>
+                        ||
+                        <Media list>
+                            <Stagger in>
+                                {props.leaders.leaders.map((leader) => {
+                                    return (
+                                        <Fade in >
+                                            <div key={leader.id} className="col-12 mt-5">
+                                                <Media className="row">
+                                                    <Media left middle className="col-2">
+                                                        <Media object src={baseUrl + leader.image} alt={leader.name} />
+                                                    </Media>
+                                                    <Media body className="col-10">
+                                                        <Media heading>{leader.name}</Media>
+                                                        <h6>{leader.designation}</h6>
+                                                        {leader.description}
+                                                    </Media>
+                                                </Media>
+                                            </div>
+                                        </Fade>
+                                    );
+                                })}
+                            </Stagger>
+                        </Media>
+                    }
                 </div>
             </div>
-        </div>
+        </div >
     );
 }
 
